@@ -1,0 +1,235 @@
+%__main_code
+
+x = zeros(1,10);
+y = zeros(1,10);
+y1 = zeros(1,10);
+y2 = zeros(1,10);
+y3 = zeros(1,10);
+y4 = zeros(1,10);
+j=1;
+for i=1:1:30
+    x(j) = i;
+    a = round(rand(1,i)*100);
+    y(j) = selsort(a,i);
+    y1(j) = bubblesort(a,i);
+    y2(j) = inssort(a,i);
+    [sa,y3(j)] = quicksort(a,1,i,n);
+    [sa1,y4(j)] = heapsort(a,i);
+    j = j+1;
+end
+plot(x,y,':r*',x,y1,x,y2,':*',x,y3,':+',x,y4,':g*');
+grid on;
+xlabel('No of elements');
+ylabel('No of iterations');
+title('Comparision graph for random data');
+x = zeros(1,10);
+y = zeros(1,10);
+y1 = zeros(1,10);
+y2 = zeros(1,10);
+y3 = zeros(1,10);
+y4 = zeros(1,10);
+j=1;
+for i=100:100:1000
+    x(j) = i;
+    a = round(rand(1,i)*100);
+    a = selsort1(a,i);
+    y(j) = selsort(a,i);
+    y1(j) = bubblesort(a,i);
+    y2(j) = inssort(a,i);
+    n = 0;
+    [sa,y3(j)] = quicksort(a,1,i,n);
+    [sa1,y4(j)] = heapsort(a,i);
+    j = j+1;
+end
+plot(x,y,x,y1,x,y2 ,x,y3,x,y4);
+grid on;
+xlabel('No of elements');
+ylabel('No of iterations');
+legend('Selection sort','Bubblesort','Insertion sort','Quicksort','Heapsort');
+title('Comparison graph for almost-sorted data');
+x = zeros(1,10);
+y = zeros(1,10);
+y1 = zeros(1,10);
+y2 = zeros(1,10);
+y3 = zeros(1,10);
+j=1;
+for i=100:100:1000
+    x(j) = i;
+    a = round(rand(1,i)*100);
+    a = selsort2(a,i);
+    y(j) = selsort(a,i);
+    y1(j) = bubblesort(a,i);
+    y2(j) = inssort(a,i);    
+    n = 0;
+    [sa,y3(j)] = quicksort(a,1,i,n);
+    [sa1,y4(j)] = heapsort(a,i);
+    j = j+1;
+end
+plot(x,y,x,y1,x,y2 ,x,y3,x,y4);
+grid on;
+xlabel('No of elements');
+ylabel('No of iterations');
+title('Comparison graph for reverse order data');
+x = zeros(1,10);
+y = zeros(1,10);
+y1 = zeros(1,10);
+y2 = zeros(1,10);
+y3 = zeros(1,10);
+y4 = zeros(1,10);
+j=1;
+for i=1:1:10
+    x(j) = i;
+    a = zeros(1,i);
+    y(j) = selsort(a,i);
+    y1(j) = bubblesort(a,i);
+    y2(j) = inssort(a,i);
+    n = 0;
+    [sa,y3(j)] = quicksort(a,1,i,n);
+    [sa1,y4(j)] = heapsort(a,i);
+    j = j+1;
+end
+plot(x,y,x,y1,x,y2 ,x,y3,x,y4);
+grid on;
+xlabel('No of elements');
+ylabel('No of iterations');
+title('Comparision graph for highly repetitive data');
+
+%__code for selection sort
+function [ ctr ] = selsort( x,n )
+ctr = 0;
+ 
+n = length(x);
+for j = 1:(n - 1)
+    imin = j;
+    for i = (j + 1):n
+        ctr=ctr+1;
+        if (x(i) < x(imin))
+            imin = i;
+            ctr=ctr-1;
+        end
+    end
+    if (imin ~= j)
+        x = swap(x,imin,j);
+    end
+end
+end 
+function x = swap(x,i,j)
+val = x(i);
+x(i) = x(j);
+x(j) = val;
+ 
+end
+
+%__code for reverse sort
+function [ ctr ] = selsort2( x,n )
+ctr = 0;
+ 
+n = length(x);
+for j = 1:(n - 1)
+    imin = j;
+    for i = (j + 1):n
+        ctr=ctr+1;
+        if (x(i) > x(imin))
+            imin = i;
+            ctr=ctr-1;
+        end
+    end
+    if (imin ~= j)
+        x = swap(x,imin,j);
+    end
+end
+end 
+function x = swap(x,i,j)
+val = x(i);
+x(i) = x(j);
+x(j) = val;
+ 
+end
+
+
+%__ for almost sorted data
+function [ a ] = selsort1( a,n )
+ctr = 0;
+for i=1:1:n
+s = a(i);
+pos = i;
+for j=i+1:1:n
+ctr = ctr+1;
+if a(j)<s
+s = a(j);
+pos = j;
+end
+end
+temp = a(i);
+a(i) = s;
+a(pos) = temp;
+end
+end
+
+%__code for heap sort
+function [list,cn] = heapSort(list,n)
+cn=0;
+    function [list,n] = siftDown(list,root,theEnd,n);
+        while (root * 2) <= theEnd
+    cn=cn+1;
+            child = root * 2;
+            if (child + 1 <= theEnd) && (list(child) < list(child+1))
+                child = child + 1;
+                cn=cn+1;
+            end
+            if list(root) < list(child) 
+                list([root child]) = list([child root]); 
+                root = child;
+                cn=cn+1;
+            else
+                return
+            end
+        end 
+    end 
+    count = numel(list);
+    cn=cn+1;
+    start = floor(count/2);
+    cn=cn+1;
+ 
+    while start >= 1
+      cn=cn+1;
+        list = siftDown(list, start, count,n);
+        start = start - 1;
+    end
+while count > 1
+        cn=cn+1;
+ 
+        list([count 1]) = list([1 count]); 
+     
+        count = count - 1;
+        list = siftDown(list,1,count,n);
+     end
+end
+
+%__ code for quick sort
+function [x,n] = quicksort(x,ll,uu,n)
+if ll<uu
+    [x, mm, n] = partition(x,ll,uu,n);
+    [x,n] = quicksort(x,ll,mm - 1,n);
+    [x,n] = quicksort(x,mm + 1,uu,n);
+end
+end
+function [x, mm, n] = partition(x,ll,uu,n)
+mm = ll;
+for j = (ll + 1):uu
+        if n >49
+        break;
+        end
+    n = n+1;
+    if (x(j) < x(ll))
+        mm = mm + 1;
+        x = swap(x,mm,j);
+    end
+end
+x = swap(x,ll,mm);
+end
+function x = swap(x,i,j)
+val = x(i);
+x(i) = x(j);
+x(j) = val; 
+end
