@@ -1,4 +1,4 @@
-%__main_code
+%_main_code
 
 x = zeros(1,10);
 y = zeros(1,10);
